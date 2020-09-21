@@ -784,7 +784,7 @@ public class GUI extends javax.swing.JFrame {
                          
                             }      
                         }else{
-                            JOptionPane.showMessageDialog(null, "Select dates\n (Pick-up date most come before Drop off date");
+                            JOptionPane.showMessageDialog(null, "Select dates\n (The pick-up date must be prior to Drop off date.)");
                         }
                     }else if (hotelPanel.isVisible()) {
                         if((checkInDateChooser.getDate() != null && checkOutDateChooser.getDate() != null) 
@@ -808,7 +808,7 @@ public class GUI extends javax.swing.JFrame {
                             }
                             
                         }else{
-                            JOptionPane.showMessageDialog(null, "Select dates\n (Check-in date most come before Check-out date");
+                            JOptionPane.showMessageDialog(null, "Select dates\n (Check-in date must be prior to Check-out date.)");
                         }
                     } else if (flightsPanel.isVisible()) {
        
