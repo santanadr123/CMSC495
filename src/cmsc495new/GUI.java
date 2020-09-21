@@ -4,7 +4,7 @@ package cmsc495new;
  * @author Adam Santana (Team Bravo)
  * @version 1.0
  * @since 2020-9-19
- * NEW NEW NEW NEW NEW 
+ * 
  * Description: This is where all the components for the GUI are created and initialized. This class is also utilized to
  *              set the values input by the user (Customer info & reservation info). This class creates three panels, one for Cars, one 
  *              for Hotels, and one for Airlines. After the required values are set, and the search button is triggered 
