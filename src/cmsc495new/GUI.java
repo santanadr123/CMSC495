@@ -88,8 +88,6 @@ public class GUI extends javax.swing.JFrame {
         bedTypeLabel = new javax.swing.JLabel();
         numberOfBedsLabel = new javax.swing.JLabel();
         numberOfBedsComboBox = new javax.swing.JComboBox<>();
-        featuresLabel = new javax.swing.JLabel();
-        featuresComboBox = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         checkInLabel = new javax.swing.JLabel();
         checkOutLabel = new javax.swing.JLabel();
@@ -601,11 +599,6 @@ public class GUI extends javax.swing.JFrame {
 
         numberOfBedsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new ComboBoxValues().getNumberOfBeds()));
 
-        featuresLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        featuresLabel.setText("Features:");
-
-        featuresComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new ComboBoxValues().getFeatures()));
-
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel6.setText("Hotel Reservation");
 
@@ -626,31 +619,36 @@ public class GUI extends javax.swing.JFrame {
         hotelPanelLayout.setHorizontalGroup(
             hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(hotelPanelLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
                 .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, hotelPanelLayout.createSequentialGroup()
+                    .addGroup(hotelPanelLayout.createSequentialGroup()
+                        .addGap(48, 48, 48)
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(numberOfBedsLabel)
-                            .addComponent(featuresLabel)
                             .addComponent(numberOfGuestsLabel)
-                            .addComponent(bedTypeLabel)
-                            .addComponent(checkInLabel)
-                            .addComponent(checkOutLabel))
+                            .addComponent(bedTypeLabel))
                         .addGap(18, 18, 18)
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(numberOfGuestsComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(numberOfGuestsComboBox, 0, 110, Short.MAX_VALUE)
                             .addComponent(numberOfBedsComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(bedTypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(featuresComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(checkOutDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(checkInDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(bedTypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, hotelPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(searchButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, hotelPanelLayout.createSequentialGroup()
+                                .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(checkInLabel)
+                                    .addComponent(checkOutLabel))
+                                .addGap(18, 18, 18)
+                                .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(checkOutDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(checkInDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(hotelPanelLayout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(hotelsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE))
+                    .addComponent(hotelsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE))
                 .addContainerGap())
         );
         hotelPanelLayout.setVerticalGroup(
@@ -673,10 +671,6 @@ public class GUI extends javax.swing.JFrame {
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(bedTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(bedTypeLabel))
-                        .addGap(18, 18, 18)
-                        .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(featuresComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(featuresLabel))
                         .addGap(18, 18, 18)
                         .addGroup(hotelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(checkInDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -750,6 +744,7 @@ public class GUI extends javax.swing.JFrame {
 
         if (evt.getSource() != null) {
             setRowID((int)tableModel.getValueAt(getRowSelected().getMinSelectionIndex(),0));
+            System.out.println(getRowID());
         }
     }//GEN-LAST:event_rowSelected
     
@@ -761,7 +756,7 @@ public class GUI extends javax.swing.JFrame {
             setCustomerFirstName(fistNameText.getText());
             setCustomerLastName(lastNameText.getText());
             if(getRowSelected() != null){ // Check if a row from the table has been selectect.
-                if(getRowSelected().getMinSelectionIndex() > 0){ // Check if Row ID has been set.
+                if(getRowSelected().getMinSelectionIndex() >= 0){ // Check if Row ID has been set.
                     if(rentalsPanel.isVisible()) {
                         if((rentalPickUpDateChooser.getDate() != null && rentalDropOffDateChooser.getDate() != null)
                                 && (rentalPickUpDateChooser.getDate().before(rentalDropOffDateChooser.getDate()))){ // Check if dates have been selected
@@ -987,8 +982,6 @@ public class GUI extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser checkOutDateChooser;
     private javax.swing.JLabel checkOutLabel;
     private javax.swing.JPanel customerPanel;
-    private javax.swing.JComboBox<String> featuresComboBox;
-    private javax.swing.JLabel featuresLabel;
     private javax.swing.JLabel firstNameLabel;
     private javax.swing.JTextField fistNameText;
     private javax.swing.JComboBox<String> flightClassComboBox;
