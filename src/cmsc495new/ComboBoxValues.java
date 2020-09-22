@@ -35,7 +35,7 @@ public class ComboBoxValues {
     
     // Values for flights panel drop-down
     private String[] airline =           {"Allied Airlines", "NorhtWest Airlines", "Oscar Airlines", 
-                                          "Private Chacter"};
+                                          "Private Charter"};
     
     private String[] numberOfPasengers = {"1","2","3","4","5","6","7","8","9"};
     
