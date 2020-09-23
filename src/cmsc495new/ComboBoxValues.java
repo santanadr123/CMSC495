@@ -12,17 +12,18 @@ package cmsc495new;
 public class ComboBoxValues {
     
     // Values for car panel drop-down
-    private String[] passengerCapacity = {"2", "4", "5", "7", "8"};
+    // Added by Gabrielle Jeuck 9/23/2020 - "Any" to all of rentals arrays
+    private String[] passengerCapacity = {"Any","2", "4", "5", "7", "8"};
    
-    private String[] bodyType =          {"Convertible", "Sedan", "SUV", "Truck"};
+    private String[] bodyType =          {"Any", "Convertible", "Sedan", "SUV", "Truck"};
     
-    private String[] make =              {"Chevy", "Ford", "Honda", "Mercedes-Benz", 
+    private String[] make =              {"Any", "Chevy", "Ford", "Honda", "Mercedes-Benz", 
                                          "Mazda", "Nissan", "Toyota"};
     
-    private String[] model =             {"Camaro", "Mustang", "Pilot", "Civic", "GLS", 
+    private String[] model =             {"Any", "Camaro", "Mustang", "Pilot", "Civic", "GLS", 
                                           "Miata", "Rogue", "Camry", "Tundra", "3"};
 
-    private String[] year =              {"2018", "2020"};
+    private String[] year =              {"Any", "2018", "2020"};
     
     // Values for hotel panel drop-down
     private String[] numberOfGuests =    {"1", "2", "3", "4"};  
@@ -35,7 +36,7 @@ public class ComboBoxValues {
     
     // Values for flights panel drop-down
     private String[] airline =           {"Allied Airlines", "NorhtWest Airlines", "Oscar Airlines", 
-                                          "Private Charter"};
+                                          "Private Chacter"};
     
     private String[] numberOfPasengers = {"1","2","3","4","5","6","7","8","9"};
     
