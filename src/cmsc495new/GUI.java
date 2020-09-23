@@ -4,14 +4,16 @@ package cmsc495new;
  * @author Adam Santana (Team Bravo)
  * @version 1.0
  * @since 2020-9-19
- * 
- * Description: This is where all the components for the GUI are created and initialized. This class is also utilized to
- *              set the values input by the user (Customer info & reservation info). This class creates three panels, one for Cars, one 
- *              for Hotels, and one for Airlines. After the required values are set, and the search button is triggered 
- *              the respective class for the visible panel will be called. The classes are Cars, Hotels 
- *              and Airline. The class that is called is responsible for fetching data from a DB and displaying it on its corresponding JTable.
+ *
+ * Description: This is where all the components for the GUI are created and
+ * initialized. This class is also utilized to set the values input by the user
+ * (Customer info & reservation info). This class creates three panels, one for
+ * Cars, one for Hotels, and one for Airlines. After the required values are
+ * set, and the search button is triggered the respective class for the visible
+ * panel will be called. The classes are Cars, Hotels and Airline. The class
+ * that is called is responsible for fetching data from a DB and displaying it
+ * on its corresponding JTable.
  */
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -705,49 +707,49 @@ public class GUI extends javax.swing.JFrame {
 
     // Method used to toggle between panels
     private void changePanel(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changePanel
-        
+
         if (evt.getSource() == rentalButton) {
-            while(rentalsTable.getRowCount()>0) { // Clears table
-                ((DefaultTableModel)rentalsTable.getModel()).removeRow(0); 
+            while (rentalsTable.getRowCount() > 0) { // Clears table
+                ((DefaultTableModel) rentalsTable.getModel()).removeRow(0);
             }
             setRowSelected(null); // When a new panel is selected, set row to null to ensure new row is picked.
             rentalsPanel.setVisible(true);
             flightsPanel.setVisible(false);
             hotelPanel.setVisible(false);
-            
+
         }
         if (evt.getSource() == flightsButton) {
-            while(flightsTable.getRowCount()>0) {// Clears table
-                ((DefaultTableModel)flightsTable.getModel()).removeRow(0);
+            while (flightsTable.getRowCount() > 0) {// Clears table
+                ((DefaultTableModel) flightsTable.getModel()).removeRow(0);
             }
             setRowSelected(null); // When a new panel is selected, set row to null to ensure new row is picked.
             rentalsPanel.setVisible(false);
             flightsPanel.setVisible(true);
             hotelPanel.setVisible(false);
-            
+
         }
         if (evt.getSource() == hotelsButton) {
-            while(hotelsTable.getRowCount()>0) {// Clears table
-                ((DefaultTableModel)hotelsTable.getModel()).removeRow(0);
+            while (hotelsTable.getRowCount() > 0) {// Clears table
+                ((DefaultTableModel) hotelsTable.getModel()).removeRow(0);
             }
             setRowSelected(null); // When a new panel is selected, set row to null to ensure new row is picked.
             rentalsPanel.setVisible(false);
             flightsPanel.setVisible(false);
             hotelPanel.setVisible(true);
-            
+
         }
     }//GEN-LAST:event_changePanel
- 
+
     // Method for row selection. This method saves the ID of the row selected by user. The ID
     // can be used to reference customer reservation on the Reservation Table in the DB.
     private void rowSelected(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rowSelected
 
         if (evt.getSource() != null) {
-            setRowID((int)tableModel.getValueAt(getRowSelected().getMinSelectionIndex(),0));
+            setRowID((int) tableModel.getValueAt(getRowSelected().getMinSelectionIndex(), 0));
             System.out.println(getRowID());
         }
     }//GEN-LAST:event_rowSelected
-    
+
     // Listener for reservation button. This method also checks if customer information has been provided,
     // that a row has been selected, and that a date has been selected (If required).
     private void makeReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeReservationActionPerformed
@@ -755,138 +757,128 @@ public class GUI extends javax.swing.JFrame {
         if (!(fistNameText.getText().isEmpty() || lastNameText.getText().isEmpty())) { // Check if name and last name are set.
             setCustomerFirstName(fistNameText.getText());
             setCustomerLastName(lastNameText.getText());
-            if(getRowSelected() != null){ // Check if a row from the table has been selectect.
-                if(getRowSelected().getMinSelectionIndex() >= 0){ // Check if Row ID has been set.
-                    if(rentalsPanel.isVisible()) {
-                        if((rentalPickUpDateChooser.getDate() != null && rentalDropOffDateChooser.getDate() != null)
-                                && (rentalPickUpDateChooser.getDate().before(rentalDropOffDateChooser.getDate()))){ // Check if dates have been selected
-                            
-       
+            if (getRowSelected() != null) { // Check if a row from the table has been selectect.
+                if (getRowSelected().getMinSelectionIndex() >= 0) { // Check if Row ID has been set.
+                    if (rentalsPanel.isVisible()) {
+                        if ((rentalPickUpDateChooser.getDate() != null && rentalDropOffDateChooser.getDate() != null)
+                                && (rentalPickUpDateChooser.getDate().before(rentalDropOffDateChooser.getDate()))) { // Check if dates have been selected
                             userAnswer = JOptionPane.showConfirmDialog(null, "Make Reservation?", "Submit Reservation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                            if(userAnswer == JOptionPane.YES_OPTION){
-                                setPickUpDate(newFormat(rentalPickUpDateChooser.getDate(),"yyyy-MM-dd"));
-                                setDropOffDate(newFormat(rentalDropOffDateChooser.getDate(),"yyyy-MM-dd"));
-                                
-                                
-                                
-                                
-        /****-------------------------------------- ADD CODE TO SAVE RESERVATIONS (CARS) ---------------------------------------------------****/
-        
-        
-        
-        
-        
-                         
-                            }      
-                        }else{
+                            if (userAnswer == JOptionPane.YES_OPTION) {
+                                setPickUpDate(newFormat(rentalPickUpDateChooser.getDate(), "yyyy-MM-dd"));
+                                setDropOffDate(newFormat(rentalDropOffDateChooser.getDate(), "yyyy-MM-dd"));
+                                /* 
+                                * ADDED BY GABRIELLE JEUCK TO RESERVE SELECTED ID FROM CARS TABLE.
+                                 */
+                                cars.confirmCarReservation(getRowID(), getCustomerFirstName() + " " + getCustomerLastName(), getPickUpDate(), getDropOffDate());
+                            }
+                        } else {
                             JOptionPane.showMessageDialog(null, "Select dates\n (The pick-up date must be prior to Drop off date.)");
                         }
-                    }else if (hotelPanel.isVisible()) {
-                        if((checkInDateChooser.getDate() != null && checkOutDateChooser.getDate() != null) 
-                                && (checkInDateChooser.getDate().before(checkOutDateChooser.getDate())) ){ // Check if dates have been selected
-       
+                    } else if (hotelPanel.isVisible()) {
+                        if ((checkInDateChooser.getDate() != null && checkOutDateChooser.getDate() != null)
+                                && (checkInDateChooser.getDate().before(checkOutDateChooser.getDate()))) { // Check if dates have been selected
+
                             userAnswer = JOptionPane.showConfirmDialog(null, "Make Reservation?", "Submit Reservation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                            if(userAnswer == JOptionPane.YES_OPTION){ // If user selects "YES" on Confirm Dialog make reservation.
-                                setCheckInDate(newFormat(checkInDateChooser.getDate(),"yyyy-MM-dd"));
-                                setCheckOutDate(newFormat(checkOutDateChooser.getDate(),"yyyy-MM-dd"));
-                                
-                                
-                                
-                                
-        /****------------------------------------ ADD CODE TO SAVE RESERVATIONS (FLIGHTS) ---------------------------------------------------****/
-        
-        
-        
-        
-        
-                           
+                            if (userAnswer == JOptionPane.YES_OPTION) { // If user selects "YES" on Confirm Dialog make reservation.
+                                setCheckInDate(newFormat(checkInDateChooser.getDate(), "yyyy-MM-dd"));
+                                setCheckOutDate(newFormat(checkOutDateChooser.getDate(), "yyyy-MM-dd"));
+
+                                /**
+                                 * **------------------------------------ ADD
+                                 * CODE TO SAVE RESERVATIONS (FLIGHTS)
+                                 * ---------------------------------------------------***
+                                 */
                             }
-                            
-                        }else{
+
+                        } else {
                             JOptionPane.showMessageDialog(null, "Select dates\n (Check-in date must be prior to Check-out date.)");
                         }
                     } else if (flightsPanel.isVisible()) {
-       
+
                         userAnswer = JOptionPane.showConfirmDialog(null, "Make Reservation?", "Submit Reservation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                            if(userAnswer == JOptionPane.YES_OPTION){// If user selects "YES" on Confirm Dialog make reservation.
-                               
-                                
-                                
-                                
-        /****----------------------------------- ADD CODE TO SAVE RESERVATIONS (HOTELS) ----------------------------------------------------****/
-                                
-        
-        
-        
-                        
-                            }
+                        if (userAnswer == JOptionPane.YES_OPTION) {// If user selects "YES" on Confirm Dialog make reservation.
+
+                            /**
+                             * **----------------------------------- ADD CODE
+                             * TO SAVE RESERVATIONS (HOTELS)
+                             * ----------------------------------------------------***
+                             */
+                        }
                     }
-                }else{
-                JOptionPane.showMessageDialog(null, "Select item from table to continue.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Select item from table to continue.");
                 }
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Select item from table to continue.");
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Please add customer first and last name.");
         }
     }//GEN-LAST:event_makeReservationActionPerformed
 
     //Listener for search button
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-             
-        if(flightsPanel.isVisible()){
+
+        if (flightsPanel.isVisible()) {
             setTableModel(flightsTable.getModel()); // gets table model.
             setRowSelected(flightsTable.getSelectionModel()); // gets row selected. Used to get Rows ID.
-            
-            
-            
-            
-            /****---------------------------   ADD CODE TO QUERY DB (AIRLINE)  --------------------------------------------------****/
-            
-            
-            
-            
+
+            /**
+             * **--------------------------- ADD CODE TO QUERY DB (AIRLINE)
+             * --------------------------------------------------***
+             */
             h = new PullData(); // Delete when adding your class. This was used only for testing.
-            h.getData(getTableModel(),"airlines"); // Delete when adding your class. This was used only for testing. 
+            h.getData(getTableModel(), "airlines"); // Delete when adding your class. This was used only for testing. 
         }
-        if(rentalsPanel.isVisible()){
-            setTableModel(rentalsTable.getModel()); 
+        
+        // Added by Gabrielle Jeuck 9/23/2020
+        if (rentalsPanel.isVisible()) {
+            setTableModel(rentalsTable.getModel());
             setRowSelected(rentalsTable.getSelectionModel());
+            // sets variables to be passed to constructor of cars to filter
+            String passengers = String.valueOf(paxCapacityComboBox.getSelectedItem());
+            String bodyType = String.valueOf(carBodyTypeComboBox.getSelectedItem());
+            String carMake = String.valueOf(carMakeComboBox.getSelectedItem());
+            String carModel = String.valueOf(modelComboBox.getSelectedItem());
+            String year = String.valueOf(carYearComboBox.getSelectedItem());
+            String checkIn = getDropOffDate();
+            String checkOut = getPickUpDate();
+            // makes user select dates before searching to validate dates aren't reserved
+            if ((rentalPickUpDateChooser.getDate() != null && rentalDropOffDateChooser.getDate() != null)
+                    && (rentalPickUpDateChooser.getDate().before(rentalDropOffDateChooser.getDate()))) {
+
+                setPickUpDate(newFormat(rentalPickUpDateChooser.getDate(), "yyyy-MM-dd"));
+                setDropOffDate(newFormat(rentalDropOffDateChooser.getDate(), "yyyy-MM-dd"));
+                                
+                // calls CarsReservation class as cars and passes search details
+                CarsReservation cars = new CarsReservation(passengers, bodyType, carMake, carModel, year, checkOut, checkIn);
+                cars.getAllCarsData(getTableModel());
+            // if dates aren't chosen, prompts user with message dialog
+            }else {
+                JOptionPane.showMessageDialog(null, "Please select appropriate dates for reservation.");
+                
+            }
             
-            
-            
-            
-            /****---------------------------   ADD CODE TO QUERY DB (CARS)--------------------------------------------------****/
-            
-            
-            
-            
-            h = new PullData(); // Delete when adding your class. This was used only for testing.
-            h.getData(getTableModel(),"cars"); // Delete when adding your class. This was used only for testing. 
         }
-        if(hotelPanel.isVisible()){
+        if (hotelPanel.isVisible()) {
             setTableModel(hotelsTable.getModel());
             setRowSelected(hotelsTable.getSelectionModel());
-            
-            
-            
-            /****---------------------------   ADD CODE TO QUERY DB (HOTELS)--------------------------------------------------****/
-            
-            
-           
-            
+
+            /**
+             * **--------------------------- ADD CODE TO QUERY DB
+             * (HOTELS)--------------------------------------------------***
+             */
             h = new PullData(); // Delete when adding your class. This was used only for testing.
-            h.getData(getTableModel(),"hotels"); // Delete when adding your class. This was used only for testing.
+            h.getData(getTableModel(), "hotels"); // Delete when adding your class. This was used only for testing.
         }
     }//GEN-LAST:event_searchButtonActionPerformed
 
     // Method used to set new date format
-    public String newFormat(Date date, String format){
-        SimpleDateFormat df = new SimpleDateFormat(format);       
+    public String newFormat(Date date, String format) {
+        SimpleDateFormat df = new SimpleDateFormat(format);
         return df.format(date);
     }
-    
+
     // Getters and Setters
     public void setCustomerFirstName(String customerFirstName) {
         this.customerFirstName = customerFirstName;
@@ -903,7 +895,7 @@ public class GUI extends javax.swing.JFrame {
     public String getCustomerLastName() {
         return customerLastName;
     }
-    
+
     public ListSelectionModel getRowSelected() {
         return rowSelected;
     }
@@ -911,7 +903,7 @@ public class GUI extends javax.swing.JFrame {
     public void setRowSelected(ListSelectionModel rowSelected) {
         this.rowSelected = rowSelected;
     }
-    
+
     public int getRowID() {
         return rowID;
     }
@@ -919,21 +911,19 @@ public class GUI extends javax.swing.JFrame {
     public void setRowID(int rowID) {
         this.rowID = rowID;
     }
-    
+
     public TableModel getTableModel() {
         return tableModel;
     }
-    
+
     public void setTableModel(TableModel tm) {
         tableModel = tm;
     }
-    
-    public String getPickUpDate()
-    {
+
+    public String getPickUpDate() {
         return pickUpDate;
     }
-    
-    
+
     public String getCheckInDate() {
         return checkInDate;
     }
@@ -945,8 +935,7 @@ public class GUI extends javax.swing.JFrame {
     public String getDropOffDate() {
         return dropOffDate;
     }
-    
-    
+
     public void setCheckInDate(String checkInDate) {
         this.checkInDate = checkInDate;
     }
@@ -962,7 +951,7 @@ public class GUI extends javax.swing.JFrame {
     public void setDropOffDate(String dropOffDate) {
         this.dropOffDate = dropOffDate;
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CustomerPanelTitleLabel;
@@ -1031,5 +1020,6 @@ public class GUI extends javax.swing.JFrame {
     private String customerLastName;
     private int rowID;
     private String checkInDate, CheckOutDate, pickUpDate, dropOffDate;
+    private CarsReservation cars = new CarsReservation();
     PullData h; // Delete when adding your class. This was used only for testing.
 }
