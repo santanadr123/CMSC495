@@ -35,12 +35,12 @@ public class ComboBoxValues {
     private String[] Features = {};
     
     // Values for flights panel drop-down
-    private String[] airline =           {"Allied Airlines", "NorhtWest Airlines", "Oscar Airlines", 
-                                          "Private Chacter"};
+    private String[] airline =           {"Any","Allied Airlines", "Northwest Airlines", "Oscar Airlines", 
+                                          "Private Charter"};
     
     private String[] numberOfPasengers = {"1","2","3","4","5","6","7","8","9"};
     
-    private String[] flightClass =       {"Economy", "Premium", "1st"};
+    private String[] flightClass =       {"Any","Economy", "Premium", "1st"};
     
     
     // Getters for arrays
