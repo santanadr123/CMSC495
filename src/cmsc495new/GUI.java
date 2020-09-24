@@ -797,12 +797,10 @@ public class GUI extends javax.swing.JFrame {
 
                         userAnswer = JOptionPane.showConfirmDialog(null, "Make Reservation?", "Submit Reservation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                         if (userAnswer == JOptionPane.YES_OPTION) {// If user selects "YES" on Confirm Dialog make reservation.
-
-                            /**
-                             * **----------------------------------- ADD CODE
-                             * TO SAVE RESERVATIONS (HOTELS)
-                             * ----------------------------------------------------***
-                             */
+                            
+                            // Updates the availabilities & Flight Reservations databases and then refreshes the available options in the UI
+                            a.updateRecord(Integer.parseInt(numberOfPassengersComboBox.getSelectedItem().toString()),getRowID(), (fistNameText.getText() + " " + lastNameText.getText()) );
+                                a.getData(getTableModel(),airlineComboBox.getSelectedItem().toString(), flightClassComboBox.getSelectedItem().toString(), Integer.parseInt(numberOfPassengersComboBox.getSelectedItem().toString()));
                         }
                     }
                 } else {
@@ -823,12 +821,9 @@ public class GUI extends javax.swing.JFrame {
             setTableModel(flightsTable.getModel()); // gets table model.
             setRowSelected(flightsTable.getSelectionModel()); // gets row selected. Used to get Rows ID.
 
-            /**
-             * **--------------------------- ADD CODE TO QUERY DB (AIRLINE)
-             * --------------------------------------------------***
-             */
-            h = new PullData(); // Delete when adding your class. This was used only for testing.
-            h.getData(getTableModel(), "airlines"); // Delete when adding your class. This was used only for testing. 
+            // Updates the available options in the UI
+            a.getData(getTableModel(),airlineComboBox.getSelectedItem().toString(), flightClassComboBox.getSelectedItem().toString(), Integer.parseInt(numberOfPassengersComboBox.getSelectedItem().toString()));  
+            
         }
         
         // Added by Gabrielle Jeuck 9/23/2020
@@ -1021,5 +1016,6 @@ public class GUI extends javax.swing.JFrame {
     private int rowID;
     private String checkInDate, CheckOutDate, pickUpDate, dropOffDate;
     private CarsReservation cars = new CarsReservation();
+    private Airplanes a = new Airplanes(); // Airplane database search and update object
     PullData h; // Delete when adding your class. This was used only for testing.
 }
