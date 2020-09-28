@@ -80,7 +80,8 @@ public class Airplanes {
                 "update Airlines set QuantityAvailable=? where FlightID=?";
         String query3 = 
                 "update Airlines set QuantityReserved=? where FlightID=?";
-        String query4 = "INSERT INTO AirlineReservations VALUES (?,?,?,?,?)";
+        String query4 = "INSERT INTO AirlineReservations (FlightID, ClientName, DepartureDate, ArrivalDate, QuantityReserved) " 
+                + "VALUES (?,?,?,?,?)";
         PreparedStatement pst2;
         PreparedStatement pst3;
         PreparedStatement pst4;
@@ -90,7 +91,7 @@ public class Airplanes {
             st = con.createStatement();
             ResultSet rs = st.executeQuery(query);
 
-            // Search DB for user selected FlighID
+            // Search DB for user selected FlightID
             while (rs.next()) {
                 int flightID = rs.getInt("FlightID");
                 if (flightID == fID) {
