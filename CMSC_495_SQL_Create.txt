@@ -56,11 +56,12 @@ PRIMARY KEY (FlightID)
 );
 /*Removed FLIGHTRESERVATIONID & QUANTITYAVAILABLE*/
 CREATE TABLE AirlineReservations(
+FlightReservationID INT NOT NULL GENERATED ALWAYS AS IDENTITY,
 FlightID int NOT NULL,
 ClientName varchar(50),
 DepartureDate varchar(10), /*Changed to String from Date type*/
 ArrivalDate varchar(10), /*Changed to String from Date type*/
 QuantityReserved int,
-PRIMARY KEY (ClientName),
+PRIMARY KEY (FlightReservationID),
 FOREIGN KEY (FlightID) REFERENCES Airlines(FlightID)
 );
