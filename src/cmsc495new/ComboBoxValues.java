@@ -26,12 +26,12 @@ public class ComboBoxValues {
     private String[] year =              {"Any", "2018", "2020"};
     
     // Values for hotel panel drop-down
-    private String[] numberOfGuests =    {"1", "2", "3", "4"};  
+    private String[] numberOfGuests =    {"Any", "1", "2", "3", "4"};  
    
-    private String[] bedType =           {"Full", "Queen", "King", "Double Full", "Double Queen", 
+    private String[] bedType =           {"Any", "Full", "Queen", "King", "Double Full", "Double Queen", 
                                           "Double King", "Queen Suite", "King Suite"};
     
-    private String[] numberOfBeds =      {"1","2"};
+    private String[] numberOfBeds =      {"Any", "1", "2"};
     private String[] Features = {};
     
     // Values for flights panel drop-down

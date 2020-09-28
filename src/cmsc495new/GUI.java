@@ -775,23 +775,20 @@ public class GUI extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(null, "Select dates\n (The pick-up date must be prior to Drop off date.)");
                         }
                     } else if (hotelPanel.isVisible()) {
-                        if ((checkInDateChooser.getDate() != null && checkOutDateChooser.getDate() != null)
-                                && (checkInDateChooser.getDate().before(checkOutDateChooser.getDate()))) { // Check if dates have been selected
-
-                            userAnswer = JOptionPane.showConfirmDialog(null, "Make Reservation?", "Submit Reservation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                            if (userAnswer == JOptionPane.YES_OPTION) { // If user selects "YES" on Confirm Dialog make reservation.
-                                setCheckInDate(newFormat(checkInDateChooser.getDate(), "yyyy-MM-dd"));
-                                setCheckOutDate(newFormat(checkOutDateChooser.getDate(), "yyyy-MM-dd"));
-
-                                /**
-                                 * **------------------------------------ ADD
-                                 * CODE TO SAVE RESERVATIONS (FLIGHTS)
-                                 * ---------------------------------------------------***
-                                 */
-                            }
-
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Select dates\n (Check-in date must be prior to Check-out date.)");
+                        String Message = Hotels.checkDateRange(checkInDateChooser.getDate(), checkOutDateChooser.getDate());
+                        
+                        if(!Message.isEmpty())
+                            JOptionPane.showMessageDialog(null, Message);
+        
+                        userAnswer = JOptionPane.showConfirmDialog(null, "Make Reservation?", "Submit Reservation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                        if (userAnswer == JOptionPane.YES_OPTION) 
+                        {                              
+                                Hotels.Add(getRowID(), getCustomerFirstName() + " " + getCustomerLastName(), checkInDateChooser, checkOutDateChooser);
+                                   
+                                //Search again to clear out newly inserted item(s)
+                                Hotels.Search(numberOfGuestsComboBox, numberOfBedsComboBox, bedTypeComboBox
+                                , checkInDateChooser, checkOutDateChooser
+                                , getTableModel());
                         }
                     } else if (flightsPanel.isVisible()) {
 
@@ -858,13 +855,18 @@ public class GUI extends javax.swing.JFrame {
         if (hotelPanel.isVisible()) {
             setTableModel(hotelsTable.getModel());
             setRowSelected(hotelsTable.getSelectionModel());
-
-            /**
-             * **--------------------------- ADD CODE TO QUERY DB
-             * (HOTELS)--------------------------------------------------***
-             */
-            h = new PullData(); // Delete when adding your class. This was used only for testing.
-            h.getData(getTableModel(), "hotels"); // Delete when adding your class. This was used only for testing.
+            
+            String Message = Hotels.checkDateRange(checkInDateChooser.getDate(), checkOutDateChooser.getDate());
+                        
+            if(!Message.isEmpty())
+                JOptionPane.showMessageDialog(null, Message);
+             
+            else
+            {
+                Hotels.Search(numberOfGuestsComboBox, numberOfBedsComboBox, bedTypeComboBox
+                        , checkInDateChooser, checkOutDateChooser
+                        , getTableModel());
+            }
         }
     }//GEN-LAST:event_searchButtonActionPerformed
 
@@ -1017,5 +1019,4 @@ public class GUI extends javax.swing.JFrame {
     private String checkInDate, CheckOutDate, pickUpDate, dropOffDate;
     private CarsReservation cars = new CarsReservation();
     private Airplanes a = new Airplanes(); // Airplane database search and update object
-    PullData h; // Delete when adding your class. This was used only for testing.
 }
