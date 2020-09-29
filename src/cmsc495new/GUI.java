@@ -824,21 +824,21 @@ public class GUI extends javax.swing.JFrame {
         if (rentalsPanel.isVisible()) {
             setTableModel(rentalsTable.getModel());
             setRowSelected(rentalsTable.getSelectionModel());
-            // sets variables to be passed to constructor of cars to filter
-            cars.setCapacity(String.valueOf(paxCapacityComboBox.getSelectedItem()));
-            cars.setBodyType(String.valueOf(carBodyTypeComboBox.getSelectedItem()));
-            cars.setMake(String.valueOf(carMakeComboBox.getSelectedItem()));
-            cars.setModel(String.valueOf(modelComboBox.getSelectedItem()));
-            cars.setYear(String.valueOf(carYearComboBox.getSelectedItem()));
-            cars.setPickUp(getPickUpDate());
-            cars.setDropOff(getDropOffDate());
+
             // makes user select dates before searching to validate dates aren't reserved
             if ((rentalPickUpDateChooser.getDate() != null && rentalDropOffDateChooser.getDate() != null)
                     && (rentalPickUpDateChooser.getDate().before(rentalDropOffDateChooser.getDate()))) {
 
                 setPickUpDate(newFormat(rentalPickUpDateChooser.getDate(), "yyyy-MM-dd"));
                 setDropOffDate(newFormat(rentalDropOffDateChooser.getDate(), "yyyy-MM-dd"));
-
+                // sets variables to be passed to constructor of cars to filter
+                cars.setCapacity(String.valueOf(paxCapacityComboBox.getSelectedItem()));
+                cars.setBodyType(String.valueOf(carBodyTypeComboBox.getSelectedItem()));
+                cars.setMake(String.valueOf(carMakeComboBox.getSelectedItem()));
+                cars.setModel(String.valueOf(modelComboBox.getSelectedItem()));
+                cars.setYear(String.valueOf(carYearComboBox.getSelectedItem()));
+                cars.setPickUp(getPickUpDate());
+                cars.setDropOff(getDropOffDate());
                 // calls CarsReservation class as cars and passes search details
                 cars.getAllCarsData(getTableModel());
                 // if dates aren't chosen, prompts user with message dialog
