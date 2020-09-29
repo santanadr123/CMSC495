@@ -11,6 +11,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -24,6 +29,7 @@ import javax.swing.table.TableModel;
  * @author Gabrielle Jeuck
  */
 public class CarsReservation {
+
     // Database credentials
     private static final String JDBC_DRIVER = "org.apache.derby.jdbc.ClientDriver";
     private static final String DB_URL = "jdbc:derby://localhost/CMSC495";
@@ -38,21 +44,22 @@ public class CarsReservation {
     private String capacity;
     private String pickUp;
     private String checkIn;
-    
+
     // Generic constructor
     public CarsReservation() {
 
     }
+
     // Main constructor to pull data
     public CarsReservation(String capacity, String bodyType,
-            String make, String model, String year, String pickUp, String checkIn) {
+            String make, String model, String year, String pickUp, String dropOff) {
         this.capacity = capacity;
         this.bodyType = bodyType;
         this.make = make;
         this.model = model;
         this.year = year;
         this.pickUp = pickUp;
-        this.checkIn = checkIn;
+        this.checkIn = dropOff;
     }
 
     // General connection to DB
@@ -63,8 +70,6 @@ public class CarsReservation {
         } catch (SQLException ex) {
             Logger.getLogger(CarsReservation.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // remove in final, used for testing connection 
-        System.out.println("Connection Successful");
     }
 
     // Displays results based on query to table
@@ -76,7 +81,6 @@ public class CarsReservation {
         int col = tm.getColumnCount();
 
         try {
-            
             while (rs.next()) {
                 Object[] rows = new Object[col];
                 for (int i = 1; i <= col; i++) {
@@ -84,7 +88,7 @@ public class CarsReservation {
                 }
                 ((DefaultTableModel) tm).insertRow(rs.getRow() - 1, rows);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(CarsReservation.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -95,8 +99,8 @@ public class CarsReservation {
         // stores additional where checks, i.e. 'a.passengercapacity', etc.
         Map<String, String> searchQueries = new HashMap<>();
         PreparedStatement stmt = null;
+        connectDataBase();
         try {
-            connectDataBase();
             String sqlQuery = "SELECT DISTINCT a.*, b.carreservationid, b.checkoutdate, b.checkindate FROM cars a "
                     + "LEFT JOIN carreservations b on (a.carid = b.carid "
                     + "AND (((? BETWEEN b.checkoutdate AND b.checkindate) "
@@ -127,13 +131,12 @@ public class CarsReservation {
             // once added prepare statement and setStrings
             stmt = conn.prepareStatement(sqlQuery);
             stmt.setString(1, getPickUp());
-            stmt.setString(2, getCheckIn());
+            stmt.setString(2, getDropOff());
             stmt.setString(3, getPickUp());
-            stmt.setString(4, getCheckIn());
-            
+            stmt.setString(4, getDropOff());
+
             // loop through to see which paramNames were added,
             // if added set index and value to stmt.setString
-            
             for (String paramName : searchQueries.keySet()) {
                 if (paramName.equals("a.passengercapacity")) {
                     stmt.setString(i, getCapacity());
@@ -162,30 +165,71 @@ public class CarsReservation {
             conn.close();
         } catch (SQLException e) {
             // remove error in final submission used for testing only
-            //System.out.println(e);
             JOptionPane.showMessageDialog(null, "Connection Issue");
         }
     }
 
-    // inserts to carreservation table upon successful resrvation
-    public void confirmCarReservation(int ID, String name, String checkOutDate, String checkInDate) {
+    // Confirmation with calculated costs / day then inserts into database
+    public String confirmCarReservation(int ID, String name, String pickUpDate, String dropOffDate) {
+        NumberFormat formatter = new DecimalFormat("#0.00");     
+        String successMessage = "";
+        String price ="";
+        String carYear = "";
+        String carMake = "";
+        String carModel = "";
+        // used to calculate total cost for receipt
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date1 = LocalDate.parse(pickUpDate, dtf);
+        LocalDate date2 = LocalDate.parse(dropOffDate, dtf);
+        long daysBetween = ChronoUnit.DAYS.between(date1, date2)+1;
+        StringBuilder test = new StringBuilder();
+        // remove in final for test purposes
         try {
             connectDataBase();
-            String sqlQuery = "insert into carreservations (CarID, ClientName, CheckOutDate, CheckInDate) VALUES (?, ?, ?, ?)";
+            String sqlQuery = "select * from cars WHERE carID =?";
             try (PreparedStatement stmt = conn.prepareStatement(sqlQuery)) {
                 stmt.setInt(1, ID);
-                stmt.setString(2, name);
-                stmt.setString(3, checkOutDate);
-                stmt.setString(4, checkInDate);
-                stmt.executeUpdate();
-            }
+                stmt.executeQuery();
+                
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()){
+                    carYear = rs.getString(6);
+                    carMake = rs.getString(4);
+                    carModel = rs.getString(5);
+                    price = rs.getString(7);
+                }
+
+                successMessage = name + " has reserved the " +carYear +" " 
+                        + carMake+" " + carModel +"\n\nfor " 
+                        +pickUpDate +" to " +dropOffDate 
+                        +" for $" +(formatter.format(Double.parseDouble((price))*daysBetween));
             conn.close();
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(CarsReservation.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return successMessage;
     }
-    // Getters and Setters -- Setters can probably be removed in final, not necessary for this class
+    // inserts into database the final reservation
+    public String getConfirmation(String name, int carID, String pickUpDate, String dropOffDate) {
+        connectDataBase();
+        String sqlQuery = "insert into carreservations (CarID, ClientName, CheckOutDate, CheckInDate) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sqlQuery)) {
+            stmt.setInt(1, carID);
+            stmt.setString(2, name);
+            stmt.setString(3, pickUpDate);
+            stmt.setString(4, dropOffDate);
+            stmt.executeUpdate();
+            conn.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CarsReservation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return confirmCarReservation(carID, name, pickUpDate, dropOffDate);
+    }
+
+    // Getters and Setters
     public String getBodyType() {
         return bodyType;
     }
@@ -234,11 +278,11 @@ public class CarsReservation {
         this.pickUp = pickUp;
     }
 
-    public String getCheckIn() {
+    public String getDropOff() {
         return checkIn;
     }
 
-    public void setCheckIn(String checkIn) {
+    public void setDropOff(String checkIn) {
         this.checkIn = checkIn;
     }
 
