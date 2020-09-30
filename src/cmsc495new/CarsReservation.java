@@ -199,10 +199,12 @@ public class CarsReservation {
                     price = rs.getString(7);
                 }
 
-                successMessage = name + " has reserved the " +carYear +" " 
-                        + carMake+" " + carModel +"\n\nfor " 
-                        +pickUpDate +" to " +dropOffDate 
-                        +" for $" +(formatter.format(Double.parseDouble((price))*daysBetween));
+                successMessage = "<html><b>Client: </b>" +name
+                        + "<br><br><strong>Vehicle:</strong> " + carYear +" "+ carMake+" " + carModel
+                        + "<br><br><strong>Pick-Up Date:</strong> "+pickUpDate
+                        + "<br><br><strong>Drop-Off Date:</strong> "+dropOffDate 
+                        + "<br><br><hr>"
+                        + "<strong>\tTotal Price: </strong>$" +(formatter.format(Double.parseDouble((price))*daysBetween))+"</html>";
             conn.close();
             }
             
