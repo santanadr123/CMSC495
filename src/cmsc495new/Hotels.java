@@ -25,6 +25,11 @@ import java.util.Date;
 
 import com.toedter.calendar.JDateChooser;
 import java.sql.PreparedStatement;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +37,6 @@ import javax.swing.*;
 
 public class Hotels {
     // Database credentials
-    private static final String JDBC_DRIVER = "org.apache.derby.jdbc.ClientDriver";
     private static final String DB_URL = "jdbc:derby://localhost/CMSC495";
     private static final String USER = "bravo";
     private static final String PASS = "bravo";
@@ -76,7 +80,7 @@ public class Hotels {
     //Searches hotels that are available for reservation. Places results in selection table.
         
         String numberOfGuests = String.valueOf(Guests.getSelectedItem());
-        //String numberOfBeds = String.valueOf(Beds.getSelectedItem());
+        String numberOfBeds = String.valueOf(Beds.getSelectedItem());
         String bedType = String.valueOf(BedType.getSelectedItem());
                                         
             PreparedStatement stmt = null;
@@ -85,8 +89,8 @@ public class Hotels {
             catch (SQLException ex) { Logger.getLogger(CarsReservation.class.getName()).log(Level.SEVERE, null, ex); }
          
             
-        String Guest_Query   = numberOfGuests.contains("Any")  ? "" : " And a.ROOMCAPACITY = ?";
-        //String Beds_Query    = numberOfBeds.contains("Any")    ? "" : " And a.ROOMCAPACITY >= ?";
+        String Guest_Query   = numberOfGuests.contains("Any")  ? "" : " And a.ROOMCAPACITY >= ?";
+        String Beds_Query    = numberOfBeds.contains("Any")    ? "" : " And a.BEDNUMBER >= ?";
         String BedType_Query = bedType.contains("Any") ? "" : " And a.BedType = ?";
         
             String sqlQuery = ""
@@ -111,7 +115,7 @@ public class Hotels {
                     +" )" 
                     + "WHERE b.HOTELRESERVATIONID IS NULL"
                     + Guest_Query
-                    //+ Beds_Query
+                    + Beds_Query
                     + BedType_Query;
             
             stmt = conn.prepareStatement(sqlQuery);
@@ -128,13 +132,11 @@ public class Hotels {
                 paramIndex++;
             }
             
-            /*
             if(!Beds_Query.isEmpty())
             {
                 stmt.setString(paramIndex, numberOfBeds); 
                 paramIndex++;
             }
-            */
             
             if(!BedType_Query.isEmpty())
             {
@@ -169,7 +171,7 @@ public class Hotels {
         }
     }
 
-    public static void Add(int ID, String ClientName, JDateChooser checkInDate, JDateChooser checkOutDate) {
+        public static void Add(int ID, String ClientName, JDateChooser checkInDate, JDateChooser checkOutDate) {
     //Adds reservation from the selection table. 
         try {
             try { conn = java.sql.DriverManager.getConnection(DB_URL, USER, PASS); } 
@@ -184,9 +186,66 @@ public class Hotels {
                 stmt.setString(3, getDateFormat(checkOutDate));
                 stmt.setString(4, getDateFormat(checkInDate));
                 stmt.executeUpdate();
+                
+                Confirm();
             }
             conn.close();
         } catch (SQLException ex){ Logger.getLogger(Hotels.class.getName()).log(Level.SEVERE, null, ex); }
+    }
+    
+    public static String calculateTotalPrice(String price, String startDate, String endDate){
+    //Determines the total price of the reservation    
+        NumberFormat formatter = new DecimalFormat("#0.00");  
+        
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate start = LocalDate.parse(startDate, dtf);
+        LocalDate end = LocalDate.parse(startDate, dtf);
+        
+        long daysBetween = ChronoUnit.DAYS.between(start, end)+1;
+
+        return "$" +(formatter.format(Double.parseDouble((price))*daysBetween));        
+    }
+
+    public static void Confirm() {
+        try {
+            try { conn = java.sql.DriverManager.getConnection(DB_URL, USER, PASS); } 
+            catch (SQLException ex) { Logger.getLogger(CarsReservation.class.getName()).log(Level.SEVERE, null, ex); }
+                        
+            String sqlQuery = ""
+                    + " SELECT"
+                    + "  a.CLIENTNAME, a.CHECKINDATE, a.CHECKOUTDATE"
+                    + ", b.PRICE"
+                    + ", b.ROOMCAPACITY, b.BEDTYPE, b.FEATURES"
+                    + " FROM HotelReservations a"
+                    + " INNER JOIN Hotels b"
+                    + "  on a.HOTELROOMID = b.HOTELROOMID"
+                    + " ORDER BY HOTELRESERVATIONID DESC"
+                    + " FETCH FIRST ROW ONLY";
+            
+            try (PreparedStatement stmt = conn.prepareStatement(sqlQuery)) {
+                stmt.executeQuery();
+                
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()){
+                    String successMessage = ""
+                            + "Client: " + rs.getString("CLIENTNAME") +"\n"
+                            + "Date: " + rs.getString("CHECKINDATE") + " - " + rs.getString("CHECKOUTDATE") + "\n"
+                            + "Total Price: " 
+                            + calculateTotalPrice(rs.getString("PRICE"), rs.getString("CHECKINDATE"), rs.getString("CHECKOUTDATE")) + "\n"
+                            + "-----------------------------------------------\n"
+                            + "Capacity: " + rs.getString("ROOMCAPACITY") + "\n"
+                            + "Bed Type: " + rs.getString("BEDTYPE") + "\n"
+                            + "Features: " + rs.getString("FEATURES");
+                    
+                    JOptionPane.showMessageDialog(null, successMessage);
+                }               
+                
+            conn.close();
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CarsReservation.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
 
