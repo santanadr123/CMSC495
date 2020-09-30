@@ -4,45 +4,43 @@ package cmsc495new;
  * @author Adam Santana (Team Bravo)
  * @version 1.0
  * @since 2020-9-19
- * 
- * Description: This class holds all the values for the drop-downs. To add more options to GUI's drop-downs
- *              add then to their respective arrays.
+ *
+ * Description: This class holds all the values for the drop-downs. To add more
+ * options to GUI's drop-downs add then to their respective arrays.
  */
-
 public class ComboBoxValues {
-    
+
     // Values for car panel drop-down
     // Added by Gabrielle Jeuck 9/23/2020 - "Any" to all of rentals arrays
-    private String[] passengerCapacity = {"Any","2", "4", "5", "7", "8"};
-   
-    private String[] bodyType =          {"Any", "Convertible", "Sedan", "SUV", "Truck"};
-    
-    private String[] make =              {"Any", "Chevy", "Ford", "Honda", "Mercedes-Benz", 
-                                         "Mazda", "Nissan", "Toyota"};
-    
-    private String[] model =             {"Any", "Camaro", "Mustang", "Pilot", "Civic", "GLS", 
-                                          "Miata", "Rogue", "Camry", "Tundra", "3"};
+    private String[] passengerCapacity = {"Any", "1", "2", "3", "4", "5", "6", "7", "8"};
 
-    private String[] year =              {"Any", "2018", "2020"};
-    
+    private String[] bodyType = {"Any", "Convertible", "Sedan", "SUV", "Truck"};
+
+    private String[] make = {"Any", "Chevy", "Ford", "Honda", "Mercedes-Benz",
+        "Mazda", "Nissan", "Toyota"};
+
+    private String[] model = {"Any", "Camaro", "Mustang", "Pilot", "Civic", "GLS",
+        "Miata", "Rogue", "Camry", "Tundra", "3"};
+
+    private String[] year = {"Any", "2018", "2019", "2020"};
+
     // Values for hotel panel drop-down
-    private String[] numberOfGuests =    {"Any", "1", "2", "3", "4"};  
-   
-    private String[] bedType =           {"Any", "Full", "Queen", "King", "Double Full", "Double Queen", 
-                                          "Double King", "Queen Suite", "King Suite"};
-    
-    private String[] numberOfBeds =      {"Any", "1", "2"};
+    private String[] numberOfGuests = {"Any", "1", "2", "3", "4"};
+
+    private String[] bedType = {"Any", "Full", "Queen", "King", "Double Full", "Double Queen",
+        "Double King", "Queen Suite", "King Suite"};
+
+    private String[] numberOfBeds = {"Any", "1", "2"};
     private String[] Features = {};
-    
+
     // Values for flights panel drop-down
-    private String[] airline =           {"Any","Allied Airlines", "Northwest Airlines", "Oscar Airlines", 
-                                          "Private Charter"};
-    
-    private String[] numberOfPasengers = {"1","2","3","4","5","6","7","8","9"};
-    
-    private String[] flightClass =       {"Any","Economy", "Premium", "1st"};
-    
-    
+    private String[] airline = {"Any", "Allied Airlines", "Northwest Airlines", "Oscar Airlines",
+        "Private Charter"};
+
+    private String[] numberOfPasengers = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+
+    private String[] flightClass = {"Any", "Economy", "Premium", "1st"};
+
     // Getters for arrays
     public String[] getPassengerCapacity() {
         return passengerCapacity;
@@ -87,7 +85,7 @@ public class ComboBoxValues {
     public String[] getFlightClass() {
         return flightClass;
     }
-    
+
     public String[] getModel() {
         return model;
     }
