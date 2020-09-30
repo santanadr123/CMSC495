@@ -16,6 +16,8 @@ package cmsc495new;
  */
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
@@ -745,8 +747,16 @@ public class GUI extends javax.swing.JFrame {
     // Listener for reservation button. This method also checks if customer information has been provided,
     // that a row has been selected, and that a date has been selected (If required).
     private void makeReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeReservationActionPerformed
-        int userAnswer = 0;
-        if (!(fistNameText.getText().isEmpty() || lastNameText.getText().isEmpty())) { // Check if name and last name are set.
+        int userAnswer;
+        String clientName = fistNameText.getText() + lastNameText.getText();
+        
+        emptySpace = (fistNameText.getText().isEmpty() || lastNameText.getText().isEmpty()); // Check if name and last name are set.
+        m = p.matcher(clientName); 
+        m2 = p2.matcher(clientName); 
+        regexCheck1 = m.find(); // Check if there are any numbers or other special characters in the client's name
+        regexCheck2 = m2.find(); // Check if there are consecutive "'" or "-" in the client's name
+        
+        if (!emptySpace & !regexCheck1 & !regexCheck2) { 
             setCustomerFirstName(fistNameText.getText());
             setCustomerLastName(lastNameText.getText());
             if (getRowSelected() != null) { // Check if a row from the table has been selectect.
@@ -793,8 +803,8 @@ public class GUI extends javax.swing.JFrame {
                          * ADDED BY Steven Troxell TO RESERVE SELECTED ID FROM AIRLINES TABLE.
                          */
                             // Updates the availabilities & Flight Reservations databases and then refreshes the available options in the UI
-                            a.updateRecord(Integer.parseInt(numberOfPassengersComboBox.getSelectedItem().toString()), getRowID(), (fistNameText.getText() + " " + lastNameText.getText()));
-                            a.getData(getTableModel(), airlineComboBox.getSelectedItem().toString(), flightClassComboBox.getSelectedItem().toString(), Integer.parseInt(numberOfPassengersComboBox.getSelectedItem().toString()));
+                            JOptionPane.showMessageDialog(null, planes.updateRecord(Integer.parseInt(numberOfPassengersComboBox.getSelectedItem().toString()), getRowID(), (fistNameText.getText() + " " + lastNameText.getText())));
+                            planes.getData(getTableModel(), airlineComboBox.getSelectedItem().toString(), flightClassComboBox.getSelectedItem().toString(), Integer.parseInt(numberOfPassengersComboBox.getSelectedItem().toString()));
                         }
                     }
                 } else {
@@ -804,7 +814,20 @@ public class GUI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Select item from table to continue.");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Please add customer first and last name.");
+            if(emptySpace){
+                JOptionPane.showMessageDialog(null, "Please add customer first and last name.");
+                
+            }else if (regexCheck1){
+                JOptionPane.showMessageDialog(null, "The client's first or "
+                        + "last name contains a character \nthat is not a "
+                        + "letter, a dash (-) or an apostrophe (') .");
+            }else{
+                JOptionPane.showMessageDialog(null, "The client's first or "
+                        + "last name contains one \nof the following double "
+                        + "sets of characters: \nDouble dashes (- -) \nA dash "
+                        + "and an apostrophe (- ') \nAn apostrophe and a dash "
+                        + "(' -) \nDouble apostrophes (' ')");
+            }
         }
     }//GEN-LAST:event_makeReservationActionPerformed
 
@@ -816,7 +839,7 @@ public class GUI extends javax.swing.JFrame {
             setRowSelected(flightsTable.getSelectionModel()); // gets row selected. Used to get Rows ID.
 
             // Updates the available options in the UI
-            a.getData(getTableModel(), airlineComboBox.getSelectedItem().toString(), flightClassComboBox.getSelectedItem().toString(), Integer.parseInt(numberOfPassengersComboBox.getSelectedItem().toString()));
+            planes.getData(getTableModel(), airlineComboBox.getSelectedItem().toString(), flightClassComboBox.getSelectedItem().toString(), Integer.parseInt(numberOfPassengersComboBox.getSelectedItem().toString()));
 
         }
 
@@ -1009,6 +1032,10 @@ public class GUI extends javax.swing.JFrame {
     private String customerLastName;
     private int rowID;
     private String checkInDate, CheckOutDate, pickUpDate, dropOffDate;
-    private Airplanes a = new Airplanes(); // Airplane database search and update object
-    CarsReservation cars = new CarsReservation(); // Rental Cars database object
+    private Boolean emptySpace, regexCheck1, regexCheck2;
+    private Pattern p = Pattern.compile("[^A-Za-z\\'\\-]");
+    private Pattern p2 = Pattern.compile("(--|''|-'|'-)");
+    private Matcher m, m2;
+    private Airplanes planes = new Airplanes(); // Airplane database search and update object
+    private CarsReservation cars = new CarsReservation(); // Rental Cars database object
 }
