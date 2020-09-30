@@ -52,10 +52,8 @@ public class Airplanes {
 
                 /* Displays only data that is within the user's specified 
                 criteria */
-                
-                
-                if ((rows[1].equals(aName) | aName.equals("Any")) 
-                        && (rows[2].equals(fClass) | fClass.equals("Any")) 
+                if ((rows[1].equals(aName) | aName.equals("Any"))
+                        && (rows[2].equals(fClass) | fClass.equals("Any"))
                         && (Integer.parseInt(rows[6].toString()) >= pNum)) {
                     ((DefaultTableModel) tm).addRow(rows);
                 }
@@ -69,18 +67,23 @@ public class Airplanes {
     }
 
     // Method to update DB and add reservation to flight reservation DB
-    public void updateRecord(Integer pNum, Integer fID, String name) {
+    public String updateRecord(Integer pNum, Integer fID, String name) {
 
+        String successMessage = "";
         Integer qAvail = 0;
         Integer qRes = 0;
         String depDate = "";
         String arvDate = "";
+        int price = 0;
+        String fClass = "";
+        String airline = "";
         String query = "SELECT * FROM bravo.airlines";
-        String query2 = 
-                "update Airlines set QuantityAvailable=? where FlightID=?";
-        String query3 = 
-                "update Airlines set QuantityReserved=? where FlightID=?";
-        String query4 = "INSERT INTO AirlineReservations (FlightID, ClientName, DepartureDate, ArrivalDate, QuantityReserved) " 
+        String query2
+                = "update Airlines set QuantityAvailable=? where FlightID=?";
+        String query3
+                = "update Airlines set QuantityReserved=? where FlightID=?";
+        String query4 = "INSERT INTO AirlineReservations (FlightID, ClientName,"
+                + " DepartureDate, ArrivalDate, QuantityReserved) "
                 + "VALUES (?,?,?,?,?)";
         PreparedStatement pst2;
         PreparedStatement pst3;
@@ -99,6 +102,9 @@ public class Airplanes {
                     qRes = rs.getInt("QuantityReserved");
                     depDate = rs.getString("DepartureDate");
                     arvDate = rs.getString("ArrivalDate");
+                    price = rs.getInt("Price");
+                    fClass = rs.getString("FlightClass");
+                    airline = rs.getString("Airline");
                 }
             }
 
@@ -121,11 +127,11 @@ public class Airplanes {
             pst4.setString(4, arvDate);
             pst4.setInt(5, pNum);
             pst4.executeUpdate();
-            
-            // Unsafe SQL statement saved for future reference
-            /*st.executeUpdate("INSERT INTO AirlineReservations VALUES ("
-                    + fID + ", '" + name + "', '" + depDate + "', '" + arvDate
-                    + "', " + pNum + ")");*/
+
+            successMessage = pNum + " " + fClass
+                    + " class ticket(s) have been reserved for " + name
+                    + ".\nAirline: " + airline + "\nPrice:  $" + price
+                    + ".00\n" + "Departs: " + depDate + "\nArrives: " + arvDate;
 
             st.close();
             pst2.close();
@@ -135,5 +141,6 @@ public class Airplanes {
         } catch (SQLException e) {
             System.out.println("Connection Failed. " + e);
         }
+        return successMessage;
     }
 }
