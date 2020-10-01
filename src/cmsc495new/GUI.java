@@ -54,6 +54,7 @@ public class GUI extends javax.swing.JFrame {
         rentalsPanel = new javax.swing.JPanel();
         rentalsScrollPane = new javax.swing.JScrollPane();
         rentalsTable = new javax.swing.JTable();
+        rentalsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         paxCapacityComboBox = new javax.swing.JComboBox<>();
         carBodyTypeComboBox = new javax.swing.JComboBox<>();
         carMakeComboBox = new javax.swing.JComboBox<>();
@@ -73,6 +74,7 @@ public class GUI extends javax.swing.JFrame {
         flightsPanel = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         flightsTable = new javax.swing.JTable();
+        flightsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         airlineComboBox = new javax.swing.JComboBox<>();
         airlineLabel = new javax.swing.JLabel();
         numberOfPassengersLabel = new javax.swing.JLabel();
@@ -84,6 +86,7 @@ public class GUI extends javax.swing.JFrame {
         hotelPanel = new javax.swing.JPanel();
         hotelsScrollPane = new javax.swing.JScrollPane();
         hotelsTable = new javax.swing.JTable();
+        hotelsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         searchButton = new javax.swing.JButton();
         numberOfGuestsComboBox = new javax.swing.JComboBox<>();
         bedTypeComboBox = new javax.swing.JComboBox<>();
@@ -293,7 +296,7 @@ public class GUI extends javax.swing.JFrame {
         carMakeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new ComboBoxValues().getMake()));
 
         passengerCapacityLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        passengerCapacityLabel.setText("No. of Passengers:");
+        passengerCapacityLabel.setText("Passenger Capacity:");
 
         bodyTypeLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         bodyTypeLabel.setText("Body Type:");
@@ -373,7 +376,7 @@ public class GUI extends javax.swing.JFrame {
                     .addGroup(rentalsPanelLayout.createSequentialGroup()
                         .addComponent(rentalsTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(rentalsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE))
+                    .addComponent(rentalsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE))
                 .addContainerGap())
         );
         rentalsPanelLayout.setVerticalGroup(
@@ -414,7 +417,7 @@ public class GUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(searchButton1))
                     .addComponent(rentalsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         bottomPanel.add(rentalsPanel, "card4");
@@ -695,7 +698,7 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 905, Short.MAX_VALUE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 905, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
