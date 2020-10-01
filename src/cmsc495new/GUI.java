@@ -296,7 +296,7 @@ public class GUI extends javax.swing.JFrame {
         carMakeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new ComboBoxValues().getMake()));
 
         passengerCapacityLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        passengerCapacityLabel.setText("Passenger Capacity:");
+        passengerCapacityLabel.setText("No. of Passengers");
 
         bodyTypeLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         bodyTypeLabel.setText("Body Type:");
@@ -376,7 +376,7 @@ public class GUI extends javax.swing.JFrame {
                     .addGroup(rentalsPanelLayout.createSequentialGroup()
                         .addComponent(rentalsTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(rentalsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE))
+                    .addComponent(rentalsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE))
                 .addContainerGap())
         );
         rentalsPanelLayout.setVerticalGroup(
@@ -698,7 +698,7 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 905, Short.MAX_VALUE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 905, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
