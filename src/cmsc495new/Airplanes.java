@@ -102,7 +102,7 @@ public class Airplanes {
                     qRes = rs.getInt("QuantityReserved");
                     depDate = rs.getString("DepartureDate");
                     arvDate = rs.getString("ArrivalDate");
-                    price = rs.getInt("Price");
+                    price = (rs.getInt("Price") * pNum);
                     fClass = rs.getString("FlightClass");
                     airline = rs.getString("Airline");
                 }
@@ -130,7 +130,7 @@ public class Airplanes {
 
             successMessage = pNum + " " + fClass
                     + " class ticket(s) have been reserved for " + name
-                    + ".\nAirline: " + airline + "\nPrice:  $" + price
+                    + ".\nAirline: " + airline + "\nTotal Price:  $" + price
                     + ".00\n" + "Departs: " + depDate + "\nArrives: " + arvDate;
 
             st.close();
