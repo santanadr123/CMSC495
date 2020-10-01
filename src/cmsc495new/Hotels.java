@@ -94,7 +94,7 @@ public class Hotels {
         String BedType_Query = bedType.contains("Any") ? "" : " And a.BedType = ?";
         
             String sqlQuery = ""
-                    + "SELECT DISTINCT a.* "
+                    + "SELECT DISTINCT a.HOTELROOMID, a.ROOMCAPACITY, a.BEDTYPE, a.FEATURES, a.PRICE "
                     + "FROM hotels a "
                     + " LEFT JOIN hotelReservations b "
                     + "  on "
@@ -183,8 +183,8 @@ public class Hotels {
             try (PreparedStatement stmt = conn.prepareStatement(sqlQuery)) {
                 stmt.setInt(1, ID);
                 stmt.setString(2, ClientName);
-                stmt.setString(3, getDateFormat(checkOutDate));
-                stmt.setString(4, getDateFormat(checkInDate));
+                stmt.setString(3, getDateFormat(checkInDate));
+                stmt.setString(4, getDateFormat(checkOutDate));
                 stmt.executeUpdate();
                 
                 Confirm();
@@ -199,9 +199,9 @@ public class Hotels {
         
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate start = LocalDate.parse(startDate, dtf);
-        LocalDate end = LocalDate.parse(startDate, dtf);
+        LocalDate end = LocalDate.parse(endDate, dtf);
         
-        long daysBetween = ChronoUnit.DAYS.between(start, end)+1;
+        long daysBetween = ChronoUnit.DAYS.between(start, end);
 
         return "$" +(formatter.format(Double.parseDouble((price))*daysBetween));        
     }
