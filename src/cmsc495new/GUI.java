@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public class GUI extends javax.swing.JFrame {
-
+ 
     public GUI() {
         initComponents(); // Initializes all components
     }
@@ -376,7 +376,7 @@ public class GUI extends javax.swing.JFrame {
                     .addGroup(rentalsPanelLayout.createSequentialGroup()
                         .addComponent(rentalsTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(rentalsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE))
+                    .addComponent(rentalsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         rentalsPanelLayout.setVerticalGroup(
@@ -554,11 +554,11 @@ public class GUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Capacity", "Bed Type", "Feature", "Price"
+                "ID", "Capacity", "No. of Beds", "Bed Type", "Feature", "Price"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -577,9 +577,12 @@ public class GUI extends javax.swing.JFrame {
             hotelsTable.getColumnModel().getColumn(0).setPreferredWidth(30);
             hotelsTable.getColumnModel().getColumn(1).setResizable(false);
             hotelsTable.getColumnModel().getColumn(1).setPreferredWidth(60);
-            hotelsTable.getColumnModel().getColumn(3).setPreferredWidth(300);
+            hotelsTable.getColumnModel().getColumn(2).setResizable(false);
+            hotelsTable.getColumnModel().getColumn(3).setResizable(false);
             hotelsTable.getColumnModel().getColumn(4).setResizable(false);
-            hotelsTable.getColumnModel().getColumn(4).setPreferredWidth(50);
+            hotelsTable.getColumnModel().getColumn(4).setPreferredWidth(300);
+            hotelsTable.getColumnModel().getColumn(5).setResizable(false);
+            hotelsTable.getColumnModel().getColumn(5).setPreferredWidth(50);
         }
 
         searchButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -698,7 +701,7 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 905, Short.MAX_VALUE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 905, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
