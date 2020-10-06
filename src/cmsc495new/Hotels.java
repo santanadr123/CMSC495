@@ -86,11 +86,11 @@ public class Hotels {
             PreparedStatement stmt = null;
         try {
             try { conn = java.sql.DriverManager.getConnection(DB_URL, USER, PASS); } 
-            catch (SQLException ex) { Logger.getLogger(CarsReservation.class.getName()).log(Level.SEVERE, null, ex); }
+            catch (SQLException ex) { JOptionPane.showMessageDialog(null, "Connection Issue"); }
          
             
         String Guest_Query   = numberOfGuests.contains("Any")  ? "" : " And a.ROOMCAPACITY >= ?";
-        String Beds_Query    = numberOfBeds.contains("Any")    ? "" : " And a.BEDNUMBER >= ?";
+        String Beds_Query    = numberOfBeds.contains("Any")    ? "" : " And a.BEDNUMBER = ?";
         String BedType_Query = bedType.contains("Any") ? "" : " And a.BedType = ?";
         
             String sqlQuery = ""
@@ -147,7 +147,7 @@ public class Hotels {
             ResultSet rs = stmt.executeQuery();
             displayResults(tm, rs);
             conn.close();
-        } catch (SQLException ex){ Logger.getLogger(Hotels.class.getName()).log(Level.SEVERE, null, ex); }      
+        } catch (SQLException ex){ JOptionPane.showMessageDialog(null, "Connection Issue"); }      
     }
     
     private static void displayResults(TableModel tm, ResultSet rs) {
@@ -167,7 +167,7 @@ public class Hotels {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(Hotels.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Connection Issue");
         }
     }
 
@@ -209,7 +209,7 @@ public class Hotels {
     public static void Confirm() {
         try {
             try { conn = java.sql.DriverManager.getConnection(DB_URL, USER, PASS); } 
-            catch (SQLException ex) { Logger.getLogger(CarsReservation.class.getName()).log(Level.SEVERE, null, ex); }
+            catch (SQLException ex) { Logger.getLogger(Hotels.class.getName()).log(Level.SEVERE, null, ex); }
                         
             String sqlQuery = ""
                     + " SELECT"
@@ -244,7 +244,7 @@ public class Hotels {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(CarsReservation.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Connection Issue");
         }
     }
 }
