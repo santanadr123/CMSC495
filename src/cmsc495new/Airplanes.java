@@ -62,7 +62,7 @@ public class Airplanes {
             st.close();
             con.close();
         } catch (SQLException e) {
-            System.out.println("Connection Failed. " + e);
+            System.out.println("Connection Issue");
         }
     }
 
@@ -139,7 +139,7 @@ public class Airplanes {
             pst4.close();
             con.close();
         } catch (SQLException e) {
-            System.out.println("Connection Failed. " + e);
+            System.out.println("Connection Issue");
         }
         return successMessage;
     }
